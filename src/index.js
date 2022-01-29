@@ -5,6 +5,7 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const multer = require('multer');
 
 const app = express();
@@ -63,6 +64,14 @@ require('./passport/passport')(passport);
 const routes = require('./routes');
 
 app.use('/auth', routes.authRoute);
+
+
+/**
+ * Setting up database
+ */
+mongoose.connect(`mongodb+srv://malcom:1CvNtuHUWl7QRpHT@cluster0.aerkg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
+  useNewUrlParser: true,
+});
 
 /**
  *  Run Server
