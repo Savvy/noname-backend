@@ -23,6 +23,14 @@ const ModelSchema = new Schema({
   timestamps: true,
 });
 
-UserSchema.plugin(uniqueValidator, {message: '{PATH} must be unique'});
+ModelSchema.methods.setPassword = function(password) {
+  this.password = bcrypt.hashSync(10, password);
+};
+
+ModelSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+ModelSchema.plugin(uniqueValidator, {message: '{PATH} must be unique'});
 
 module.exports = mongoose.model('User', ModelSchema);
