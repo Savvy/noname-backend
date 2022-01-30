@@ -16,6 +16,6 @@ router.get('/logout', function(req, res, next) {
 router.post('/register', [verifySignup.checkUsernameAndEmail],
     controller.register);
 
-router.get('/confirm', function(req, res, next) {});
+router.get('/confirm/:token', controller.verify);
 
 module.exports = router;

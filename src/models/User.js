@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
@@ -20,9 +21,14 @@ const ModelSchema = new Schema({
     index: true,
   },
   password: String,
-  active: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
+    enum: ['Pending', 'Active'],
+    default: 'Pending',
+  },
+  confirmationCode: {
+    type: String,
+    unique: true,
   },
   banned: {
     type: Boolean,
@@ -32,12 +38,29 @@ const ModelSchema = new Schema({
   timestamps: true,
 });
 
+/**
+ * Hash and set user account password.
+ * @param {String} password
+ */
 ModelSchema.methods.setPassword = function(password) {
   this.password = bcrypt.hashSync(password, 10);
 };
 
+/**
+ * Returns a boolean indicating if the password matches the hash password.
+ * @param {String} password
+ * @return {Boolean}
+ */
 ModelSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
+};
+
+/**
+ * By default accounts are set to pending, this method is used to
+ * generate a confirmation token to activate the user account.
+ */
+ModelSchema.methods.generateToken = function() {
+  this.confirmationCode = crypto.randomBytes(16).toString('hex');
 };
 
 ModelSchema.plugin(uniqueValidator, {message: '{PATH} must be unique'});
