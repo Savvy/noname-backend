@@ -19,6 +19,14 @@ const ModelSchema = new Schema({
     index: true,
   },
   password: String,
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  banned: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });
