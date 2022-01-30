@@ -1,7 +1,7 @@
 // eslint-disable-next-line new-cap
 const router = require('express').Router();
 const {verifySignup} = require('../middleware');
-const {authController} = require('../controllers');
+const {auth: controller} = require('../controllers');
 
 router.post('/login', function(req, res, next) {
   return null; // Handle login
@@ -16,7 +16,7 @@ router.get('/logout', function(req, res, next) {
 });
 
 router.post('/register', [verifySignup.checkUsernameAndEmail],
-    authController.register);
+    controller.register);
 
 router.get('/confirm', function(req, res, next) {});
 

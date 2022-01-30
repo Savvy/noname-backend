@@ -1,3 +1,4 @@
 module.exports = {
-  authRoute: require('./auth'),
+  category: require('./category'),
+  auth: require('./auth'),
 };

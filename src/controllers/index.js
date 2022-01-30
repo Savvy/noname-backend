@@ -1,3 +1,4 @@
 module.exports = {
-  authController: require('./auth'),
+  auth: require('./auth'),
+  category: require('./category'),
 };
