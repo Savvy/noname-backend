@@ -2,14 +2,18 @@
   "name": "noname-backend",
   "version": "1.0.0",
   "description": "Nodejs forums backend for NoName",
+  "author": "Savvy",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Savvy/noname-backend.git"
+  },
   "main": "./src/index.js",
   "scripts": {
     "dev": "nodemon ./src/index",
     "lint": "eslint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Savvy",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "^8.8.0",
     "eslint-config-google": "^0.14.0"
