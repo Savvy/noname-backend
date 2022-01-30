@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
@@ -32,7 +33,7 @@ const ModelSchema = new Schema({
 });
 
 ModelSchema.methods.setPassword = function(password) {
-  this.password = bcrypt.hashSync(10, password);
+  this.password = bcrypt.hashSync(password, 10);
 };
 
 ModelSchema.methods.validPassword = function(password) {

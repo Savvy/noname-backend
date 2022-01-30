@@ -1,8 +1,8 @@
 const {Category: Model} = require('../models');
 const {slugify} = require('../helpers');
-const categories = module.exports;
+const controller = module.exports;
 
-categories.create = function(req, res, next) {
+controller.create = function(req, res, next) {
   const data = req.body;
   const category = new Model({
     name: data.name,
@@ -17,10 +17,14 @@ categories.create = function(req, res, next) {
       res.status(500).send({message: error});
       return;
     }
+    res.json({
+      success: true,
+      message: 'category_created',
+    });
   });
 };
 
-categories.getAll = function(req, res, next) {
+controller.getAll = function(req, res, next) {
   Model.find({}, (error, result) => {
     if (error) {
       res.status(500).send({message: error});
@@ -29,6 +33,22 @@ categories.getAll = function(req, res, next) {
     res.json({
       success: true,
       result: result,
+    });
+  });
+};
+
+controller.delete = function(req, res, next) {
+  Model.deleteOne({
+    _id: req.body._id,
+  }, (error) => {
+    if (error) {
+      res.status(500).send({message: error});
+      return;
+    }
+
+    res.json({
+      success: true,
+      message: 'category_deleted',
     });
   });
 };

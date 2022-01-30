@@ -3,9 +3,7 @@ const router = require('express').Router();
 const {verifySignup} = require('../middleware');
 const {auth: controller} = require('../controllers');
 
-router.post('/login', function(req, res, next) {
-  return null; // Handle login
-});
+router.post('/login', controller.login);
 
 router.get('/logout', function(req, res, next) {
   req.logout();
