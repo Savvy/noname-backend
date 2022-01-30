@@ -69,7 +69,7 @@ app.use('/auth', routes.authRoute);
 /**
  * Setting up database
  */
-mongoose.connect(`mongodb+srv://malcom:1CvNtuHUWl7QRpHT@cluster0.aerkg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
+mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
 });
 
