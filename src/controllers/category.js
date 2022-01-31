@@ -52,3 +52,11 @@ controller.delete = function(req, res, next) {
     });
   });
 };
+
+controller.update = async function(req, res, next) {
+  const update = req.body;
+  const filter = {_id: req.params._id};
+  const category = await Model.findOneAndUpdate(filter, update, {new: true});
+
+  return res.status(200).send(category);
+};

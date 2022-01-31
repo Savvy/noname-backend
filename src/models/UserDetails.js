@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ModelSchema = new Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+  },
   bio: {
     type: String,
   },
@@ -11,6 +15,8 @@ const ModelSchema = new Schema({
   },
   gender: {
     type: String,
+    enum: ['Male', 'Female', 'Other', 'Prefer not to say'],
+    default: 'Prefer not to say',
   },
   socials: {
     twitter: String,

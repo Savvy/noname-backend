@@ -5,6 +5,8 @@ const {user: controller} = require('../controllers');
 
 router.get('/', isAuthenticated, controller.get);
 
-router.post('/:username', controller.update);
+router.post('/changePassword', isAuthenticated, controller.changePassword);
+
+router.post('/:username', isAuthenticated, controller.update);
 
 module.exports = router;

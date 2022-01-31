@@ -9,6 +9,24 @@ const ModelSchema = new Schema({
   },
   name: String,
   slug: String,
+  recent_thread: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Thread',
+  },
+  parent: {
+    type: mongoose.Schema.ObjectId,
+  },
+  redirect: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  redirect_url: {
+    type: String,
+  },
+  icon: {
+    type: String,
+  },
 }, {
   timestamps: true,
 });

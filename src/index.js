@@ -64,6 +64,7 @@ require('./passport/passport')(passport);
 const routes = require('./routes');
 
 app.use('/auth', routes.auth);
+app.use('/user', routes.user);
 app.use('/category', routes.category);
 
 

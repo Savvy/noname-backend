@@ -1,5 +1,5 @@
 const passport = require('passport');
-const {User: Model} = require('../models');
+const {User: Model, UserDetails} = require('../models');
 
 const controller = module.exports;
 
@@ -44,6 +44,17 @@ controller.register = function(req, res, next) {
       return;
     }
     // TODO: Send user confirmation email
+
+    // Create and save UserDetails
+    new UserDetails({
+      user: user,
+    }).save((error, user) => {
+      if (error) {
+        res.status(500).send({message: error});
+        return;
+      }
+    });
+
     res.json({
       success: true,
       message: 'user_registered',
@@ -54,12 +65,12 @@ controller.register = function(req, res, next) {
 
 controller.verify = async function(req, res, next) {
   const filter = {confirmationCode: req.params.token};
-  const update = {status: 'Active'};
+  const update = {status: 'Active', confirmationCode: ''};
   try {
-    const user = await Model.findOneAndUpdate(filter, update, {new: true});
+    await Model.findOneAndUpdate(filter, update);
     res.status(200).json({
       success: true,
-      user: user,
+      message: 'account_confirmed',
     });
   } catch (error) {
     res.status(500).send({error: error});
