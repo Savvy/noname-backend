@@ -6,6 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 const multer = require('multer');
 
 const app = express();
@@ -26,6 +27,7 @@ const sessionMiddleware = session({
   secret: process.env.SECRET,
   resave: true,
   saveUninitialized: false,
+  store: MongoStore.create({mongoUrl: process.env.MONGO_CONNECTION}),
   cookie: {
     secure: false,
     maxAge: 24 * 60 * 60 * 1000,
