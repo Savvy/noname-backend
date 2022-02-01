@@ -9,7 +9,6 @@ module.exports = new LocalStrategy({
     if (!user || !user.validPassword(password)) {
       return done(null, false, {error: 'invalid_credentials'});
     }
-
     done(null, user, {success: true, message: 'success_login'});
   }).catch(done);
 });

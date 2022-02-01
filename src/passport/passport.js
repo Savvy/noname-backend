@@ -7,11 +7,16 @@ module.exports = (passport) => {
 
   passport.deserializeUser((id, done) => {
     // find User and return done(null user); if no error
-    User.findById(id, function(error, user) {
+    User.find({_id: id}).lean().exec(function(error, results) {
       if (error) {
         return done(error);
       }
-      return done(null, user);
+
+      if (results.length < 1) {
+        return done(new Error('user_not_found'));
+      }
+
+      return done(null, results[0]);
     });
   });
 

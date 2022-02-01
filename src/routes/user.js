@@ -5,8 +5,10 @@ const {user: controller} = require('../controllers');
 
 router.get('/', isAuthenticated, controller.get);
 
+router.get('/recent', controller.findLatest);
+
 router.post('/changePassword', isAuthenticated, controller.changePassword);
 
-router.post('/:username', isAuthenticated, controller.update);
+router.post('/user/:username', isAuthenticated, controller.update);
 
 module.exports = router;

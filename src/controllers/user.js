@@ -3,9 +3,12 @@ const controller = module.exports;
 
 
 controller.get = function(req, res, next) {
+  const user = {...req.user};
+  delete user.password;
+  delete user.confirmationCode;
   res.status(200).json({
     success: true,
-    user: req.user,
+    user: user,
   });
 };
 
@@ -27,6 +30,22 @@ controller.find = function(req, res, next) {
           user: user,
         });
       });
+};
+
+controller.findLatest = function(req, res, next) {
+  Model.findOne({}, 'username', {
+    sort: {'created_at': -1},
+  }, function(error, user) {
+    if (error) {
+      res.status(500).send({message: error});
+      return;
+    }
+
+    res.status(200).send({
+      success: true,
+      user: user,
+    });
+  });
 };
 
 controller.changePassword = async function(req, res, next) {

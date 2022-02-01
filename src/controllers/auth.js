@@ -23,8 +23,10 @@ controller.login = function(req, res, next) {
         res.status(500).send({message: error});
         return;
       }
-
-      res.status(200).json(info);
+      res.status(200).json({
+        ...info,
+        user,
+      });
     });
   })(req, res, next);
 };
