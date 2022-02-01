@@ -18,7 +18,7 @@ const app = express();
 app.use(morgan('combined'));
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONT_HOST,
   credentials: true,
 }));
 
