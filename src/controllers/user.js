@@ -13,14 +13,15 @@ controller.get = function(req, res, next) {
 };
 
 controller.find = function(req, res, next) {
-  Model.findOne(req.body, 'username createdAt updatedAt banned')
+  Model.findOne({username: req.params.username},
+      '-password -confirmationCode -email')
       .exec((error, user) => {
         if (error) {
           res.status(500).send({message: error});
           return;
         }
 
-        if (!error) {
+        if (!user) {
           res.status(404).send({message: 'user_not_found'});
           return;
         }
