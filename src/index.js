@@ -68,6 +68,7 @@ const routes = require('./routes');
 app.use('/auth', routes.auth);
 app.use('/user', routes.user);
 app.use('/category', routes.category);
+app.use('/module', routes.module);
 
 
 /**
