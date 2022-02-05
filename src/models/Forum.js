@@ -27,6 +27,10 @@ const ModelSchema = new Schema({
   icon: {
     type: String,
   },
+  order: {
+    type: Number,
+    default: 0,
+  },
 }, {
   timestamps: true,
 });

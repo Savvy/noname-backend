@@ -12,12 +12,12 @@ controller.create = function(req, res, next) {
     order: data.order ? data.order : 0,
   });
 
-  category.save((error, category) => {
+  category.save((error, _category) => {
     if (error) {
       res.status(500).send({message: error});
       return;
     }
-    res.json({
+    res.status(200).json({
       success: true,
       message: 'category_created',
     });
@@ -25,14 +25,17 @@ controller.create = function(req, res, next) {
 };
 
 controller.getAll = function(req, res, next) {
-  Model.find({}, (error, result) => {
+  Model.find({}).populate({
+    path: 'forums',
+  }).exec(function(error, results) {
     if (error) {
       res.status(500).send({message: error});
       return;
     }
+
     res.json({
       success: true,
-      result: result,
+      result: results,
     });
   });
 };

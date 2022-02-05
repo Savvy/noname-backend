@@ -14,6 +14,12 @@ const ModelSchema = new Schema({
     type: Number,
     default: 0,
   },
+  forums: {
+    type: [{
+      type: mongoose.Schema.ObjectId,
+      ref: 'Forum',
+    }],
+  },
 }, {
   timestamps: true,
 });
