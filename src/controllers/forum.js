@@ -37,6 +37,26 @@ controller.create = async function(req, res, next) {
   });
 };
 
+controller.get = function(req, res, next) {
+  Model.findOne({
+    slug: req.params.slug,
+  }).sort({
+    'order': -1,
+    'created_at': -1,
+  }).exec((error, forum) => {
+    if (error) {
+      res.status(500).send({message: error});
+      return;
+    }
+
+    if (!forum) {
+      res.status(400).send({message: 'forum_not_found'});
+      return;
+    }
+    res.status(200).json({success: true, result: forum});
+  });
+};
+
 controller.getAll = function(req, res, next) {
   Model.find({})
       .sort({
