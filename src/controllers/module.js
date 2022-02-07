@@ -8,7 +8,7 @@ controller.statistics = async function(req, res, next) {
     threadCount: await ThreadModel.countDocuments({}),
     postCount: 0, // PostModel.countDocuments({}),
     latestUser: await UserModel.findOne({}, 'username', {
-      sort: {'created_at': -1},
+      sort: {'createdAt': -1},
     }),
   });
 };

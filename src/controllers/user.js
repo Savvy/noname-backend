@@ -35,7 +35,7 @@ controller.find = function(req, res, next) {
 
 controller.findLatest = function(req, res, next) {
   Model.findOne({}, 'username', {
-    sort: {'created_at': -1},
+    sort: {'createdAt': -1},
   }, function(error, user) {
     if (error) {
       res.status(500).send({message: error});

@@ -31,6 +31,12 @@ const ModelSchema = new Schema({
     type: Number,
     default: 0,
   },
+  threads: {
+    type: [{
+      type: mongoose.Schema.ObjectId,
+      ref: 'Thread',
+    }],
+  }
 }, {
   timestamps: true,
 });

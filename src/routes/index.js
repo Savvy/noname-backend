@@ -4,4 +4,5 @@ module.exports = {
   auth: require('./auth'),
   user: require('./user'),
   module: require('./module'),
+  thread: require('./thread'),
 };

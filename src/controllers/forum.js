@@ -42,8 +42,32 @@ controller.get = function(req, res, next) {
     slug: req.params.slug,
   }).sort({
     'order': -1,
-    'created_at': -1,
-  }).exec((error, forum) => {
+    'createdAt': -1,
+  }).populate({
+    path: 'threads',
+    populate: { 
+      path: 'user',
+      select: 'username'
+    },
+    options: {
+      sort: { 
+        'pinned': -1,
+        'order': -1,
+        'createdAt': -1,
+        'updatedAt': -1,
+      },
+      limit: 30,
+    }
+  })
+  .populate({
+    path: 'recent_thread',
+    select: 'user updatedAt',
+    populate: { 
+      path: 'user',
+      select: 'username'
+    }
+  })
+  .exec((error, forum) => {
     if (error) {
       res.status(500).send({message: error});
       return;

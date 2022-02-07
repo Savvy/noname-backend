@@ -69,6 +69,7 @@ app.use('/auth', routes.auth);
 app.use('/user', routes.user);
 app.use('/category', routes.category);
 app.use('/forum', routes.forum);
+app.use('/thread', routes.thread);
 app.use('/module', routes.module);
 
 

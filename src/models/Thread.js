@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 
 const ModelSchema = new Schema({
   title: String,
-  content: Object,
+  content: String,
   pinned: Boolean,
+  slug: String,
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
