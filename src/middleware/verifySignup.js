@@ -6,7 +6,7 @@ middleware.checkUsernameAndEmail = function(req, res, next) {
   const {username, email} = req.body;
 
   User.findOne({
-    usernmae: username,
+    username: username,
   }).exec((error, user) => {
     if (error) {
       res.status(500).send({message: error});
