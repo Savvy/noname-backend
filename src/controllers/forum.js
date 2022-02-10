@@ -45,10 +45,21 @@ controller.get = function(req, res, next) {
     'createdAt': -1,
   }).populate({
     path: 'threads',
-    populate: { 
-      path: 'user',
-      select: 'username'
-    },
+    populate: [
+      { 
+        path: 'user',
+        select: 'username',
+      },
+      {
+        path: 'posts',
+        options: {
+          sort: {
+            'createdAt': -1,
+            'updatedAt': -1
+          }
+        }
+      }
+    ],
     options: {
       sort: { 
         'pinned': -1,

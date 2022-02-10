@@ -3,24 +3,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ModelSchema = new Schema({
-  title: String,
   content: String,
-  pinned: Boolean,
-  slug: String,
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
   },
-  forum: {
+  thread: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Forum',
+    ref: 'Thread',
   },
-  posts: [{
-    type: mongoose.Schema.ObjectId,
-    ref: 'Post'
-  }]
 }, {
   timestamps: true,
 });
 
-module.exports = mongoose.model('Thread', ModelSchema);
+module.exports = mongoose.model('Post', ModelSchema);

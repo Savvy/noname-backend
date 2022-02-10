@@ -4,4 +4,5 @@ module.exports = {
   Category: require('./Category'),
   Forum: require('./Forum'),
   Thread: require('./Thread'),
+  Post: require('./Post'),
 };
