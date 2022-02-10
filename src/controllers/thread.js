@@ -7,7 +7,7 @@ controller.create = async function(req, res, next) {
   const thread = new Model({
     forum: data.forum,
     title: data.title,
-    slug: slugify(data.title),
+    /* slug: slugify(data.title), */
     content: data.content ? data.content : '',
     pinned: data.pinned,
     user: req.user._id,
@@ -37,9 +37,14 @@ controller.create = async function(req, res, next) {
 
 controller.get = function(req, res, next) {
   Model.findOne({
-    slug: req.params.slug,
+    threadId: req.params.id,
+  }).populate({
+    path: 'user',
+    select: 'username'
+  }).populate({
+    path: 'posts',
   }).sort({
-    'order': -1,
+    'updatedAt': -1,
     'createdAt': -1,
   }).exec((error, forum) => {
     if (error) {
