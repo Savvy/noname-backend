@@ -45,7 +45,7 @@ controller.get = function(req, res, next) {
     path: 'posts',
   }).populate({
     path: 'forum',
-    select: 'name'
+    select: 'name slug'
   }).sort({
     'updatedAt': -1,
     'createdAt': -1,
