@@ -27,7 +27,15 @@ controller.create = function(req, res, next) {
 controller.getAll = function(req, res, next) {
   Model.find({}).populate({
     path: 'forums',
-    select: ['name', 'slug', 'slug', 'redirect', 'redirect_url', 'order'],
+    select: ['name', 'slug', 'redirect',
+      'redirect_url', 'order', 'recent_thread'],
+    populate: {
+      path: 'recent_thread',
+      populate: {
+        path: 'user',
+        select: 'username',
+      },
+    },
   }).exec(function(error, results) {
     if (error) {
       res.status(500).send({message: error});

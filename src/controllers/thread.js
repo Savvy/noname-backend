@@ -1,10 +1,10 @@
 const {Thread: Model, Forum} = require('../models');
-const {slugify} = require('../helpers');
+/* const {slugify} = require('../helpers'); */
 const controller = module.exports;
 
 controller.create = async function(req, res, next) {
   const data = req.body;
-  const thread = new Model({
+  let thread = new Model({
     forum: data.forum,
     title: data.title,
     /* slug: slugify(data.title), */
@@ -13,17 +13,17 @@ controller.create = async function(req, res, next) {
     user: req.user._id,
   });
 
-  thread.save((error, _thread) => {
-    if (error) {
-      res.status(500).send({message: error});
-      return;
-    }
-  });
+  try {
+    thread = await thread.save();
+  } catch (error) {
+    res.status(500).send({message: error});
+    return;
+  }
 
   const forum = await Forum.findById(data.forum);
   forum.threads.push(thread);
   forum.recent_thread = thread;
-  forum.save((error, _result) => {
+  forum.save((error, _) => {
     if (error) {
       res.status(500).send({message: error});
       return;
@@ -31,6 +31,7 @@ controller.create = async function(req, res, next) {
     res.status(200).json({
       success: true,
       message: 'thread_created',
+      thread: thread.threadId,
     });
   });
 };
