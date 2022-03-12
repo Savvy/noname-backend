@@ -1,14 +1,21 @@
-const {User: UserModel, Thread: ThreadModel} = require('../models');
+const {User, Thread, Post} = require('../models');
 const controller = module.exports;
 
 controller.statistics = async function(req, res, next) {
   res.status(200).json({
     success: true,
-    memberCount: await UserModel.countDocuments({}),
-    threadCount: await ThreadModel.countDocuments({}),
-    postCount: 0, // PostModel.countDocuments({}),
-    latestUser: await UserModel.findOne({}, 'username', {
+    memberCount: await User.countDocuments({}),
+    threadCount: await Thread.countDocuments({}),
+    postCount: await Post.countDocuments({}),
+    latestUser: await User.findOne({}, 'username', {
       sort: {'createdAt': -1},
     }),
+  });
+};
+
+controller.shareSite = function() {
+  res.status(200).json({
+    success: true,
+
   });
 };
