@@ -41,12 +41,12 @@ controller.get = function(req, res, next) {
     threadId: req.params.id,
   }).populate({
     path: 'user',
-    select: 'username'
+    select: 'username',
   }).populate({
     path: 'posts',
   }).populate({
     path: 'forum',
-    select: 'name slug'
+    select: 'name slug',
   }).sort({
     'updatedAt': -1,
     'createdAt': -1,

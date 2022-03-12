@@ -70,6 +70,7 @@ app.use('/user', routes.user);
 app.use('/category', routes.category);
 app.use('/forum', routes.forum);
 app.use('/thread', routes.thread);
+app.use('/post', routes.post);
 app.use('/module', routes.module);
 
 

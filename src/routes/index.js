@@ -5,4 +5,5 @@ module.exports = {
   user: require('./user'),
   module: require('./module'),
   thread: require('./thread'),
+  post: require('./post'),
 };

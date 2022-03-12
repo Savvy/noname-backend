@@ -18,8 +18,8 @@ const ModelSchema = new Schema({
   },
   posts: [{
     type: mongoose.Schema.ObjectId,
-    ref: 'Post'
-  }]
+    ref: 'Post',
+  }],
 }, {
   timestamps: true,
 });

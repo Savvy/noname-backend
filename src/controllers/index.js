@@ -5,4 +5,5 @@ module.exports = {
   auth: require('./auth'),
   user: require('./user'),
   module: require('./module'),
+  post: require('./post'),
 };
