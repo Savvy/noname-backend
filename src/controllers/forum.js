@@ -46,7 +46,7 @@ controller.get = function(req, res, next) {
   }).populate({
     path: 'threads',
     populate: [
-      { 
+      {
         path: 'user',
         select: 'username',
       },
@@ -55,41 +55,45 @@ controller.get = function(req, res, next) {
         options: {
           sort: {
             'createdAt': -1,
-            'updatedAt': -1
-          }
-        }
-      }
+            'updatedAt': -1,
+          },
+        },
+        populate: {
+          path: 'user',
+          select: 'username',
+        },
+      },
     ],
     options: {
-      sort: { 
+      sort: {
         'pinned': -1,
         'order': -1,
         'createdAt': -1,
         'updatedAt': -1,
       },
       limit: 30,
-    }
+    },
   })
-  .populate({
-    path: 'recent_thread',
-    select: 'user updatedAt',
-    populate: { 
-      path: 'user',
-      select: 'username'
-    }
-  })
-  .exec((error, forum) => {
-    if (error) {
-      res.status(500).send({message: error});
-      return;
-    }
+      .populate({
+        path: 'recent_thread',
+        select: 'user updatedAt',
+        populate: {
+          path: 'user',
+          select: 'username',
+        },
+      })
+      .exec((error, forum) => {
+        if (error) {
+          res.status(500).send({message: error});
+          return;
+        }
 
-    if (!forum) {
-      res.status(400).send({message: 'forum_not_found'});
-      return;
-    }
-    res.status(200).json({success: true, result: forum});
-  });
+        if (!forum) {
+          res.status(400).send({message: 'forum_not_found'});
+          return;
+        }
+        res.status(200).json({success: true, result: forum});
+      });
 };
 
 controller.getAll = function(req, res, next) {
