@@ -44,6 +44,9 @@ controller.get = function(req, res, next) {
     select: 'username',
   }).populate({
     path: 'posts',
+    populate: {
+      path: 'user',
+    },
   }).populate({
     path: 'forum',
     select: 'name slug',
