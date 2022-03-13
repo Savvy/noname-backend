@@ -1,11 +1,13 @@
-const {User: Model, UserDetails} = require('../models');
+const {User: Model, UserDetails, Thread, Post} = require('../models');
 const controller = module.exports;
 
 
-controller.get = function(req, res, next) {
+controller.get = async function(req, res, next) {
   const user = {...req.user};
   delete user.password;
   delete user.confirmationCode;
+  user.threadCount = await Thread.countDocuments({user: user});
+  user.postCount = await Post.countDocuments({user: user});
   res.status(200).json({
     success: true,
     user: user,
@@ -15,7 +17,7 @@ controller.get = function(req, res, next) {
 controller.find = function(req, res, next) {
   Model.findOne({username: req.params.username},
       '-password -confirmationCode -email')
-      .exec((error, user) => {
+      .lean().exec(async (error, user) => {
         if (error) {
           res.status(500).send({message: error});
           return;
@@ -25,6 +27,9 @@ controller.find = function(req, res, next) {
           res.status(404).send({message: 'user_not_found'});
           return;
         }
+
+        user.threadCount = await Thread.countDocuments({user: user});
+        user.postCount = await Post.countDocuments({user: user});
 
         res.status(200).send({
           success: true,
