@@ -1,6 +1,19 @@
 const {Comment: Model} = require('../models');
 const controller = module.exports;
 
+controller.delete = async function(req, res, next) {
+  try {
+    await Model.findByIdAndDelete(req.body.id);
+    res.status(200).json({
+      success: true,
+      message: 'comment_deleted',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
+
 controller.create = async function(req, res, next) {
   const data = req.body;
   try {

@@ -5,4 +5,6 @@ const {comment: controller} = require('../controllers');
 
 router.post('/', isAuthenticated, controller.create);
 
+router.delete('/', isAuthenticated, controller.delete);
+
 module.exports = router;
