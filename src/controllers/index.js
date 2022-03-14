@@ -6,4 +6,5 @@ module.exports = {
   user: require('./user'),
   module: require('./module'),
   post: require('./post'),
+  comment: require('./comment'),
 };

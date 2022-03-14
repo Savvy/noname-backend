@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
 
@@ -63,6 +62,7 @@ ModelSchema.methods.generateToken = function() {
   this.confirmationCode = crypto.randomBytes(16).toString('hex');
 };
 
-ModelSchema.plugin(uniqueValidator, {message: '{PATH} must be unique'});
+ModelSchema.plugin(require('mongoose-unique-validator'),
+    {message: '{PATH} must be unique'});
 
 module.exports = mongoose.model('User', ModelSchema);

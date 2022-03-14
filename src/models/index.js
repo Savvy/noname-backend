@@ -5,4 +5,5 @@ module.exports = {
   Forum: require('./Forum'),
   Thread: require('./Thread'),
   Post: require('./Post'),
+  Comment: require('./Comment'),
 };

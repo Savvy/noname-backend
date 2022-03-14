@@ -1,4 +1,4 @@
-const {User: Model, UserDetails, Thread, Post} = require('../models');
+const {User: Model, UserDetails, Thread, Post, Comment} = require('../models');
 const controller = module.exports;
 
 
@@ -6,6 +6,23 @@ controller.get = async function(req, res, next) {
   const user = {...req.user};
   delete user.password;
   delete user.confirmationCode;
+  const comments = await Comment.find({user: user._id})
+      .populate({
+        path: 'user author',
+        select: 'username',
+      })
+      .populate({
+        path: 'children',
+        populate: {
+          path: 'user author',
+          select: 'username',
+        },
+      }).sort({
+        createdAt: '-1',
+      });
+
+  user.wallPosts = comments;
+
   user.threadCount = await Thread.countDocuments({user: user});
   user.postCount = await Post.countDocuments({user: user});
   res.status(200).json({
@@ -27,6 +44,24 @@ controller.find = function(req, res, next) {
           res.status(404).send({message: 'user_not_found'});
           return;
         }
+
+        const comments = await Comment.find({user: user._id})
+            .populate({
+              path: 'user author',
+              select: 'username',
+            })
+            .populate({
+              path: 'children',
+              populate: {
+                path: 'user author',
+                select: 'username',
+              },
+            })
+            .sort({
+              createdAt: '-1',
+            });
+
+        user.wallPosts = comments;
 
         user.threadCount = await Thread.countDocuments({user: user});
         user.postCount = await Post.countDocuments({user: user});
