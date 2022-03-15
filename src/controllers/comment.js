@@ -14,6 +14,40 @@ controller.delete = async function(req, res, next) {
   }
 };
 
+controller.like = async function(req, res, next) {
+  const data = req.body;
+  console.log(data);
+  try {
+    const comment = await Model.findById(data.id);
+    if (!comment) {
+      // Comment does not exist;
+      return;
+    }
+
+    if (comment.like.includes(req.user._id)) {
+      console.log('User has unliked the post');
+      comment.like.pull(req.user._id);
+      await comment.save();
+      res.status(200).json({
+        success: true,
+        message: 'comment_unliked',
+      });
+      return;
+    }
+
+    comment.like.push(req.user);
+    await comment.save();
+    res.status(200).json({
+      success: true,
+      message: 'comment_liked',
+    });
+    return;
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
+
 controller.create = async function(req, res, next) {
   const data = req.body;
   try {

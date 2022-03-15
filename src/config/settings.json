@@ -1,0 +1,17 @@
+{
+  "brandName": "NoName",
+  "socials": [
+    {
+      "url": "https://twitter.com",
+      "icon": "bi bi-twitter"
+    },
+    {
+      "url": "https://facebook.com/",
+      "icon": "bi bi-facebook"
+    },
+    {
+      "url": "mailto:me@noname.forums",
+      "icon": "bi bi-envelope"
+    }
+  ]
+}

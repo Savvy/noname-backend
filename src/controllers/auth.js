@@ -55,7 +55,6 @@ controller.register = function(req, res, next) {
         res.status(500).send({message: error});
         return;
       }
-      
       res.json({
         success: true,
         message: 'user_registered',
