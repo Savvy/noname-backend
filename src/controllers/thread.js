@@ -41,7 +41,7 @@ controller.get = function(req, res, next) {
     threadId: req.params.id,
   }).populate({
     path: 'user',
-    select: 'username',
+    select: 'username gravatar',
   }).populate({
     path: 'posts',
     populate: {
@@ -63,6 +63,7 @@ controller.get = function(req, res, next) {
       res.status(400).send({message: 'forum_not_found'});
       return;
     }
+
     res.status(200).json({success: true, result: forum});
   });
 };
@@ -79,7 +80,6 @@ controller.getAll = function(req, res, next) {
           res.status(500).send({message: error});
           return;
         }
-
         res.status(200).json({success: true, results: results});
       });
 };
