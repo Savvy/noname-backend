@@ -41,11 +41,17 @@ controller.get = function(req, res, next) {
     threadId: req.params.id,
   }).populate({
     path: 'user',
-    select: 'username gravatar',
+    select: 'username',
+    populate: {
+      path: 'details',
+    },
   }).populate({
     path: 'posts',
     populate: {
       path: 'user',
+      populate: {
+        path: 'details',
+      },
     },
   }).populate({
     path: 'forum',

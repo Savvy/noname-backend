@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const gravatar = require('gravatar');
 
 const Schema = mongoose.Schema;
 
@@ -34,6 +33,10 @@ const ModelSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  details: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'UserDetails',
+  },
 }, {
   timestamps: true,
 });
@@ -62,19 +65,6 @@ ModelSchema.methods.validPassword = function(password) {
 ModelSchema.methods.generateToken = function() {
   this.confirmationCode = crypto.randomBytes(16).toString('hex');
 };
-
-ModelSchema.post('find', function(docs) {
-  docs.forEach((doc) => {
-    doc.gravatar = gravatar.url(doc.email,
-        {protocol: 'https', s: '130', d: 'retro'});
-  });
-});
-
-ModelSchema.post('findOne', function(doc) {
-  doc.gravatar = gravatar.url(doc.email,
-      {protocol: 'https', s: '130', d: 'https://i.imgur.com/45vM6qK.jpg'});
-  console.log(doc);
-});
 
 ModelSchema.plugin(require('mongoose-unique-validator'),
     {message: '{PATH} must be unique'});

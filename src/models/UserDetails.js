@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ModelSchema = new Schema({
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-  },
   bio: {
     type: String,
+  },
+  avatarType: {
+    type: String,
+    enum: ['Gravatar', 'Custom'],
+    default: 'Gravatar',
   },
   avatar: {
     type: String,

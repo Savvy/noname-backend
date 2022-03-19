@@ -1,7 +1,6 @@
 const {User: Model, UserDetails, Thread, Post, Comment} = require('../models');
 const controller = module.exports;
 
-
 controller.get = async function(req, res, next) {
   const user = {...req.user};
   delete user.password;
@@ -10,12 +9,18 @@ controller.get = async function(req, res, next) {
       .populate({
         path: 'user author',
         select: 'username',
+        populate: {
+          path: 'details',
+        },
       })
       .populate({
         path: 'children',
         populate: {
           path: 'user author',
           select: 'username',
+          populate: {
+            path: 'details',
+          },
         },
       }).sort({
         createdAt: '-1',
@@ -33,8 +38,8 @@ controller.get = async function(req, res, next) {
 
 controller.find = function(req, res, next) {
   Model.findOne({username: req.params.username},
-      '-password -confirmationCode -email')
-      .lean().exec(async (error, user) => {
+      '-password -confirmationCode -email').
+      populate('details').lean().exec(async (error, user) => {
         if (error) {
           res.status(500).send({message: error});
           return;
@@ -48,13 +53,19 @@ controller.find = function(req, res, next) {
         const comments = await Comment.find({user: user._id})
             .populate({
               path: 'user author',
-              select: 'username',
+              select: 'username details',
+              populate: {
+                path: 'details',
+              },
             })
             .populate({
               path: 'children',
               populate: {
                 path: 'user author',
-                select: 'username',
+                select: 'username details',
+                populate: {
+                  path: 'details',
+                },
               },
             })
             .sort({

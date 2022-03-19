@@ -1,4 +1,5 @@
 const passport = require('passport');
+const gravatar = require('gravatar');
 const {User: Model, UserDetails} = require('../models');
 
 const controller = module.exports;
@@ -31,37 +32,41 @@ controller.login = function(req, res, next) {
   })(req, res, next);
 };
 
-controller.register = function(req, res, next) {
+controller.register = async function(req, res, next) {
   const user = new Model({
     username: req.body.username,
     email: req.body.email,
   });
 
-  user.setPassword(req.body.password);
-  user.generateToken();
+  // TODO: Grab gravatar defaults from another source.
 
-  user.save((error, user) => {
+  // Create and save UserDetails
+  const userDetails = new UserDetails({
+    avatar: gravatar.url(user.email, {protocol: 'https', s: '130', d: 'https://i.imgur.com/45vM6qK.jpg'}),
+  });
+
+  try {
+    user.setPassword(req.body.password);
+    user.generateToken();
+
     if (error) {
       res.status(500).send({message: error});
       return;
     }
     // TODO: Send user confirmation email
 
-    // Create and save UserDetails
-    new UserDetails({
-      user: user,
-    }).save((error, user) => {
-      if (error) {
-        res.status(500).send({message: error});
-        return;
-      }
-      res.json({
-        success: true,
-        message: 'user_registered',
-        result: user,
-      });
+    await userDetails.save();
+    user.details = userDetails;
+    await user.save();
+    res.json({
+      success: true,
+      message: 'user_registered',
+      result: user,
     });
-  });
+  } catch (error) {
+    res.status(500).send(error);
+    return;
+  }
 };
 
 controller.verify = async function(req, res, next) {

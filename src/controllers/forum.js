@@ -49,6 +49,9 @@ controller.get = function(req, res, next) {
       {
         path: 'user',
         select: 'username',
+        populate: {
+          path: 'details',
+        },
       },
       {
         path: 'posts',
@@ -61,6 +64,9 @@ controller.get = function(req, res, next) {
         populate: {
           path: 'user',
           select: 'username',
+          populate: {
+            path: 'details',
+          },
         },
       },
     ],

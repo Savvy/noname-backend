@@ -34,6 +34,9 @@ controller.getAll = function(req, res, next) {
       populate: {
         path: 'user',
         select: 'username',
+        populate: {
+          path: 'details',
+        },
       },
     },
   }).exec(function(error, results) {
