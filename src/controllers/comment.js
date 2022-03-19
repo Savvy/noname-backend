@@ -3,7 +3,18 @@ const controller = module.exports;
 
 controller.delete = async function(req, res, next) {
   try {
-    await Model.findByIdAndDelete(req.body.id);
+    const comment = await Model.findById(req.body.id);
+    if (!comment) {
+      res.status(404).send({message: 'comment_not_found'});
+      return;
+    }
+
+    if (comment.author !== req.user._id) {
+      res.status(403).send({message: 'no_permission'});
+      return;
+    }
+
+    await comment.delete();
     res.status(200).json({
       success: true,
       message: 'comment_deleted',
