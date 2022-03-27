@@ -28,7 +28,7 @@ controller.getAll = function(req, res, next) {
   Model.find({}).populate({
     path: 'forums',
     select: ['name', 'slug', 'redirect',
-      'redirect_url', 'order', 'recent_thread'],
+      'redirect_url', 'order', 'recent_thread', 'icon'],
     populate: {
       path: 'recent_thread',
       populate: {
