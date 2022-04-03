@@ -7,4 +7,5 @@ module.exports = {
   thread: require('./thread'),
   post: require('./post'),
   comment: require('./comment'),
+  settings: require('./settings'),
 };

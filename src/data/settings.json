@@ -1,17 +1,26 @@
 {
-  "title": "NoName",
-  "defaultLanguage": "en-US",
+  "minPostLength": 8,
+  "maxPostLength": 32767,
+  "minTitleLength": 3,
+  "maxTitleLength": 255,
+  "minUsernameLength": 2,
+  "maxUsernameLength": 16,
+  "minPasswordLength": 6,
+  "minPasswordStrength": 1,
   "socials": [
     {
       "url": "https://twitter.com",
+      "target": "_blank",
       "icon": "bi bi-twitter"
     },
     {
       "url": "https://facebook.com/",
+      "target": "_blank",
       "icon": "bi bi-facebook"
     },
     {
       "url": "mailto:me@noname.forums",
+      "target": "_blank",
       "icon": "bi bi-envelope"
     }
   ]

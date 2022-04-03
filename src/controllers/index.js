@@ -7,4 +7,5 @@ module.exports = {
   module: require('./module'),
   post: require('./post'),
   comment: require('./comment'),
+  settings: require('./settings'),
 };

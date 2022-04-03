@@ -68,6 +68,7 @@ app.use(pageView);
 */
 const routes = require('./routes');
 
+app.use('/settings', routes.settings);
 app.use('/auth', routes.auth);
 app.use('/user', routes.user);
 app.use('/category', routes.category);
