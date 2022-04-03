@@ -60,6 +60,9 @@ app.use(passport.session());
 
 require('./passport/passport')(passport);
 
+const {pageView} = require('./middleware');
+app.use(pageView);
+
 /*
   Include and setup routes.
 */

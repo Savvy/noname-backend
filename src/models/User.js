@@ -37,6 +37,10 @@ const ModelSchema = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'UserDetails',
   },
+  lastSeen: {
+    type: Date,
+    default: new Date(),
+  },
 }, {
   timestamps: true,
 });

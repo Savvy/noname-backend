@@ -1,5 +1,6 @@
 {
-  "brandName": "NoName",
+  "title": "NoName",
+  "defaultLanguage": "en-US",
   "socials": [
     {
       "url": "https://twitter.com",

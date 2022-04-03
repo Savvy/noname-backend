@@ -19,11 +19,16 @@ controller.login = function(req, res, next) {
     // TODO: Check for verification,
     // decide if we want to allow login when unverified.
 
-    req.login(user, function(error) {
+    req.login(user, async function(error) {
       if (error) {
         res.status(500).send({message: error});
         return;
       }
+
+      await Model.findByIdAndUpdate(req.user._id, {
+        lastSeen: new Date(),
+      });
+
       res.status(200).json({
         ...info,
         user,
