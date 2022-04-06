@@ -1,4 +1,5 @@
 const {User: Model} = require('../models');
+
 module.exports = async function(req, res, next) {
   if (req.user) {
     // TODO: Update online users

@@ -1,5 +1,11 @@
 const {User, Thread, Post} = require('../models');
+
 const controller = module.exports;
+
+controller.onlineUsers = async function(req, res, next) {
+  res.status(200).json({
+  });
+};
 
 controller.statistics = async function(req, res, next) {
   res.status(200).json({

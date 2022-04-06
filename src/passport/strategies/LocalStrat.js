@@ -5,7 +5,7 @@ module.exports = new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
 }, function(email, password, done) {
-  User.findOne({email: email}).then(function(user) {
+  User.findOne({email: email}).populate('details').then(function(user) {
     if (!user || !user.validPassword(password)) {
       return done(null, false, {error: 'invalid_credentials'});
     }
