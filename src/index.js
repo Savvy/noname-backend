@@ -19,12 +19,12 @@ const app = express();
 app.use(morgan('combined'));
 
 app.use(cors({
-  origin: process.env.FRONT_HOST,
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }));
 
 const sessionMiddleware = session({
-  secret: process.env.SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false,
   store: MongoStore.create({mongoUrl: process.env.MONGO_CONNECTION}),
