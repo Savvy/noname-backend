@@ -3,6 +3,12 @@ const router = require('express').Router();
 const {verifySignup} = require('../middleware');
 const {auth: controller} = require('../controllers');
 
+router.get('/discord', controller.discordLogin);
+router.get('/discord/callback', controller.discordCallback);
+
+router.get('/twitter', controller.twitterLogin);
+router.get('/twitter/callback', controller.twitterCallback);
+
 router.post('/login', controller.login);
 
 router.get('/logout', function(req, res, next) {

@@ -41,6 +41,32 @@ const ModelSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  socials: {
+    twitter: {
+      id: {
+        type: String,
+        required: false,
+      },
+      username: {
+        type: String,
+        requireed: false,
+      },
+    },
+    discord: {
+      id: {
+        type: String,
+        required: false,
+      },
+      username: {
+        type: String,
+        requireed: false,
+      },
+      discriminator: {
+        type: String,
+        required: false,
+      },
+    },
+  },
 }, {
   timestamps: true,
 });

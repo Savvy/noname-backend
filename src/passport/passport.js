@@ -22,4 +22,6 @@ module.exports = (passport) => {
   });
 
   passport.use('local', require('./strategies/LocalStrat'));
+  passport.use('discord', require('./strategies/DiscordStrat'));
+  passport.use('twitter', require('./strategies/TwitterStrat'));
 };

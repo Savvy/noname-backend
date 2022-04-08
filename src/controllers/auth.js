@@ -37,6 +37,24 @@ controller.login = function(req, res, next) {
   })(req, res, next);
 };
 
+controller.discordLogin = passport.authenticate('discord');
+
+controller.discordCallback = passport.authenticate('discord', {
+  successRedirect: process.env.CLIENT_URL,
+  failureRedirect: (process.env.CLIENT_URL + '/login'),
+}), function(req, res) {
+  res.redirect(process.env.CLIENT_URL);
+};
+
+controller.twitterLogin = passport.authenticate('twitter');
+
+controller.twitterCallback = passport.authenticate('twitter', {
+  successRedirect: process.env.CLIENT_URL,
+  failureRedirect: (process.env.CLIENT_URL + '/login'),
+}), function(req, res) {
+  res.redirect(process.env.CLIENT_URL);
+};
+
 controller.register = async function(req, res, next) {
   const user = new Model({
     username: req.body.username,
