@@ -3,7 +3,17 @@ const {User, Thread, Post} = require('../models');
 const controller = module.exports;
 
 controller.onlineUsers = async function(req, res, next) {
+  const users = await User.find({
+    lastSeen: {
+      $gt: new Date(Date.now() - (5 * 60 * 1000)),
+    },
+  }).select('username lastSeen').populate({
+    path: 'details',
+    select: 'avatarType avatar',
+  });
   res.status(200).json({
+    success: true,
+    users: users,
   });
 };
 
