@@ -7,6 +7,10 @@
   "maxUsernameLength": 16,
   "minPasswordLength": 6,
   "minPasswordStrength": 1,
+  "socialAuth": {
+    "discord": true,
+    "twitter": true
+  },
   "socials": [
     {
       "url": "https://twitter.com",
