@@ -30,7 +30,7 @@ controller.getAll = function(req, res, next) {
     select: ['name', 'slug', 'redirect',
       'redirect_url', 'order', 'recent_thread', 'icon'],
     populate: {
-      path: 'recent_thread',
+      path: 'recent_thread threads',
       populate: {
         path: 'user',
         select: 'username',
