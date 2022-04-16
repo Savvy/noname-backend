@@ -1,4 +1,5 @@
 const {Thread: Model, Forum} = require('../models');
+const settings = require('../data/settings.json');
 /* const {slugify} = require('../helpers'); */
 const controller = module.exports;
 
@@ -79,7 +80,6 @@ controller.getAll = function(req, res, next) {
       .sort({
         pinned: -1,
         forum: -1,
-        order: -1,
         createdAt: -1,
       }).limit(30).exec(function(error, results) {
         if (error) {
@@ -88,4 +88,32 @@ controller.getAll = function(req, res, next) {
         }
         res.status(200).json({success: true, results: results});
       });
+};
+
+controller.recentThreads = function(req, res, next) {
+  Model.find({}).sort({
+    createdAt: -1,
+  }).populate({
+    path: 'user',
+    select: 'username',
+    populate: {
+      path: 'details',
+    },
+  }).populate({
+    path: 'posts',
+    populate: {
+      path: 'user',
+      select: 'username',
+      populate: {
+        path: 'details',
+      },
+    },
+  }).limit(settings.recentThreadsMax).exec(function(error, results) {
+    if (error) {
+      console.error(error);
+      res.status(500).send({message: error});
+      return;
+    }
+    res.status(200).json({success: true, results: results});
+  });
 };
