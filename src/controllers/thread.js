@@ -44,14 +44,14 @@ controller.get = function(req, res, next) {
     path: 'user',
     select: 'username',
     populate: {
-      path: 'details',
+      path: 'details role',
     },
   }).populate({
     path: 'posts',
     populate: {
       path: 'user',
       populate: {
-        path: 'details',
+        path: 'details role',
       },
     },
   }).populate({
@@ -97,7 +97,7 @@ controller.recentThreads = function(req, res, next) {
     path: 'user',
     select: 'username',
     populate: {
-      path: 'details',
+      path: 'details role',
     },
   }).populate({
     path: 'posts',
@@ -105,7 +105,7 @@ controller.recentThreads = function(req, res, next) {
       path: 'user',
       select: 'username',
       populate: {
-        path: 'details',
+        path: 'details role',
       },
     },
   }).limit(settings.recentThreadsMax).exec(function(error, results) {

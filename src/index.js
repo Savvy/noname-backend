@@ -85,6 +85,10 @@ mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
 });
 
+const defaultRoles = require('./data');
+
+defaultRoles.handleRoles();
+
 /**
  *  Run Server
  */

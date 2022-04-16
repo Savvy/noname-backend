@@ -37,6 +37,10 @@ const ModelSchema = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'UserDetails',
   },
+  role: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Role',
+  },
   lastSeen: {
     type: Date,
     default: new Date(),

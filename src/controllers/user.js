@@ -39,7 +39,7 @@ controller.get = async function(req, res, next) {
 controller.find = function(req, res, next) {
   Model.findOne({username: req.params.username},
       '-password -confirmationCode -email').
-      populate('details').lean().exec(async (error, user) => {
+      populate('details role').lean().exec(async (error, user) => {
         if (error) {
           res.status(500).send({message: error});
           return;

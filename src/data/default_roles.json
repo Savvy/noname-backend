@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Member",
+    "text_color": "#eeeeee",
+    "badge_color": "#7A78A3",
+    "icon": "",
+    "isDefault": true
+  },
+  {
+    "name": "Admin",
+    "text_color": "#eeeeee",
+    "badge_color": "#eb4d4b",
+    "icon": "bi bi-shield-shaded",
+    "isAdmin": true
+  }
+]

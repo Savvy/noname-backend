@@ -1,6 +1,6 @@
 const passport = require('passport');
 const gravatar = require('gravatar');
-const {User: Model, UserDetails} = require('../models');
+const {User: Model, UserDetails, Role} = require('../models');
 
 const controller = module.exports;
 
@@ -56,9 +56,15 @@ controller.twitterCallback = passport.authenticate('twitter', {
 };
 
 controller.register = async function(req, res, next) {
+  const count = await Model.countDocuments({});
+
+  const filter = count == 0 ? {isAdmin: true} : {isDefault: true};
+  const role = await Role.findOne(filter);
+
   const user = new Model({
     username: req.body.username,
     email: req.body.email,
+    role: role,
   });
 
   // TODO: Grab gravatar defaults from another source.

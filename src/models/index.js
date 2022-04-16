@@ -6,4 +6,5 @@ module.exports = {
   Thread: require('./Thread'),
   Post: require('./Post'),
   Comment: require('./Comment'),
+  Role: require('./Role'),
 };
