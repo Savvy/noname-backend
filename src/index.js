@@ -78,7 +78,6 @@ app.use('/post', routes.post);
 app.use('/module', routes.module);
 app.use('/comment', routes.comment);
 
-
 /**
  * Setting up database
  */
