@@ -7,7 +7,7 @@ module.exports = (passport) => {
 
   passport.deserializeUser((id, done) => {
     // find User and return done(null user); if no error
-    User.find({_id: id}).populate('details')
+    User.find({_id: id}).populate('details role')
         .lean().exec(function(error, results) {
           if (error) {
             return done(error);
