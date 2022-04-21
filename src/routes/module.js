@@ -6,4 +6,6 @@ router.get('/online', controller.onlineUsers);
 
 router.get('/statistics', controller.statistics);
 
+router.get('/recentusers', controller.recentUsers);
+
 module.exports = router;

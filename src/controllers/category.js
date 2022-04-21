@@ -24,32 +24,37 @@ controller.create = function(req, res, next) {
   });
 };
 
-controller.getAll = function(req, res, next) {
-  Model.find({}).populate({
-    path: 'forums',
-    select: ['name', 'slug', 'redirect',
-      'redirect_url', 'order', 'recent_thread', 'icon'],
-    populate: {
-      path: 'recent_thread threads',
-      populate: {
-        path: 'user',
-        select: 'username',
+controller.getAll = async function(req, res, next) {
+  try {
+    const results = await Model.find({}).populate({
+      path: 'forums',
+      populate: [{
+        path: 'recent_thread',
         populate: {
-          path: 'details',
+          path: 'user',
+          select: 'username',
+          populate: {
+            path: 'details',
+          },
         },
-      },
-    },
-  }).exec(function(error, results) {
-    if (error) {
-      res.status(500).send({message: error});
-      return;
-    }
-
+      }, {
+        path: 'threads',
+        populate: {
+          path: 'user',
+          select: 'username',
+          populate: {
+            path: 'details',
+          },
+        },
+      }],
+    });
     res.json({
       success: true,
       result: results,
     });
-  });
+  } catch (error) {
+    res.status(500).send({message: error});
+  }
 };
 
 controller.delete = function(req, res, next) {

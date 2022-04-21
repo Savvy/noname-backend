@@ -8,6 +8,7 @@
   "minPasswordLength": 6,
   "minPasswordStrength": 1,
   "recentThreadsMax": 200,
+  "recentUsersLimit": 8,
   "socialAuth": {
     "discord": true,
     "twitter": true

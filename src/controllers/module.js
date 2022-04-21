@@ -1,4 +1,5 @@
 const {User, Thread, Post} = require('../models');
+const settings = require('../data/settings.json');
 
 const controller = module.exports;
 
@@ -11,6 +12,19 @@ controller.onlineUsers = async function(req, res, next) {
     path: 'details',
     select: 'avatarType avatar',
   });
+  res.status(200).json({
+    success: true,
+    users: users,
+  });
+};
+
+controller.recentUsers = async function(req, res, next) {
+  const users = await User.find({}).sort({
+    createdAt: -1,
+  }).select('username').populate({
+    path: 'details',
+    select: 'avatarType avatar',
+  }).limit(settings.recentUsersLimit);
   res.status(200).json({
     success: true,
     users: users,
