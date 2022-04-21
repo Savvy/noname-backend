@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-const {User: Model, UserDetails} = require('../../models');
+const {User: Model, UserDetails, Role} = require('../../models');
 const gravatar = require('gravatar');
 const DiscordStrategy = require('passport-discord').Strategy;
 
@@ -41,10 +41,17 @@ function findAndUpdate(filter, profile) {
 };
 
 async function createNewUser(profile) {
+  const name = await getAvailableName(profile.username);
+  const count = await Model.countDocuments({});
+
+  const filter = count == 0 ? {isAdmin: true} : {isDefault: true};
+  const role = await Role.findOne(filter);
+
   const user = new Model({
-    username: profile.username + profile.discriminator,
+    username: name,
     email: profile.email,
     status: 'Active',
+    role: role,
     socials: {
       discord: {
         id: profile.id,
@@ -67,3 +74,15 @@ async function createNewUser(profile) {
     return new Promise((_, rej) => rej(error));
   }
 };
+
+async function getAvailableName(username) {
+  let attempt = 0;
+  let count = await Model.countDocuments({username: username});
+  console.log(count);
+  while (count > 0) {
+    attempt++;
+    count = await Model.countDocuments({username: (username + attempt)});
+  }
+  console.log(count);
+  return username + (attempt > 0 ? attempt : '');
+}
