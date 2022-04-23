@@ -130,7 +130,13 @@ controller.verify = async function(req, res, next) {
   const filter = {confirmationCode: req.params.token};
   const update = {status: 'Active', confirmationCode: ''};
   try {
-    await Model.findOneAndUpdate(filter, update);
+    const doc = await Model.findOneAndUpdate(filter, update);
+    if (!doc) {
+      return res.status(500).json({
+        success: false,
+        message: 'account_not_found',
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'account_confirmed',
