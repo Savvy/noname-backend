@@ -1,5 +1,6 @@
 const passport = require('passport');
 const gravatar = require('gravatar');
+const {emailer} = require('../helpers');
 const {User: Model, UserDetails, Role} = require('../models');
 
 const controller = module.exports;
@@ -77,12 +78,19 @@ controller.register = async function(req, res, next) {
   try {
     user.setPassword(req.body.password);
     user.generateToken();
-
+    /*
     if (error) {
       res.status(500).send({message: error});
       return;
-    }
+    } */
     // TODO: Send user confirmation email
+    const url = `${process.env.CLIENT_URL}/confirm/${user.confirmationCode}`;
+
+    emailer.send('verification', user, {
+      userName: user.username,
+      verificationUrl: url,
+      subject: 'Confirm Your Email Address',
+    });
 
     await userDetails.save();
     user.details = userDetails;
@@ -94,6 +102,26 @@ controller.register = async function(req, res, next) {
     });
   } catch (error) {
     res.status(500).send(error);
+    return;
+  }
+};
+
+controller.resend = async function(req, res, next) {
+  try {
+    const user = req.user;
+    const url = `${process.env.CLIENT_URL}/confirm/${user.confirmationCode}`;
+    await emailer.send('verification', user, {
+      userName: user.username,
+      verificationUrl: url,
+      subject: 'Confirm Your Email Address',
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'confirmation_resent',
+    });
+  } catch (error) {
+    res.status(500).send({error: error.message});
     return;
   }
 };
