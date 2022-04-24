@@ -27,7 +27,6 @@ const ModelSchema = new Schema({
   },
   confirmationCode: {
     type: String,
-    unique: true,
   },
   banned: {
     type: Boolean,
