@@ -133,7 +133,6 @@ controller.requestReset = async function(req, res, next) {
       });
     }
 
-    console.log(doc);
     doc.generateReset();
     doc.save();
 
