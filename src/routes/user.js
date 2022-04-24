@@ -11,6 +11,10 @@ router.get('/recent', controller.findLatest);
 
 router.post('/changePassword', isAuthenticated, controller.changePassword);
 
+router.post('/requestReset', controller.requestReset);
+
+router.post('/resetPassword/:token', controller.resetPassword);
+
 router.post('/update/:username', isAuthenticated, controller.update);
 
 module.exports = router;

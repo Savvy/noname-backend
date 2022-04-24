@@ -77,7 +77,7 @@ controller.register = async function(req, res, next) {
 
   try {
     user.setPassword(req.body.password);
-    user.generateToken();
+    user.generateConfirmation();
     /*
     if (error) {
       res.status(500).send({message: error});

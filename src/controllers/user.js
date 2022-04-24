@@ -1,4 +1,5 @@
 const {User: Model, UserDetails, Thread, Post, Comment} = require('../models');
+const {emailer} = require('../helpers');
 const controller = module.exports;
 
 controller.get = async function(req, res, next) {
@@ -119,6 +120,64 @@ controller.changePassword = async function(req, res, next) {
       message: 'password_updated',
     });
   });
+};
+
+controller.requestReset = async function(req, res, next) {
+  const filter = {email: req.body.email};
+  try {
+    const doc = await Model.findOne(filter);
+    if (!doc) {
+      return res.status(200).json({
+        success: true,
+        message: 'password_request_sent',
+      });
+    }
+
+    console.log(doc);
+    doc.generateReset();
+    doc.save();
+
+    const url = `${process.env.CLIENT_URL}/reset-password/${doc.resetToken}`;
+    await emailer.send('forgot-password', doc, {
+      userName: doc.username,
+      resetUrl: url,
+      subject: 'Reset Your Password',
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'confirmation_resent',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({error: error});
+    return;
+  }
+};
+
+controller.resetPassword = async function(req, res, next) {
+  const filter = {resetToken: req.params.token};
+
+  try {
+    const doc = await Model.findOne(filter);
+    if (!doc) {
+      return res.status(500).json({
+        success: false,
+        message: 'reset_not_found',
+      });
+    }
+
+    doc.setPassword(req.body.password);
+    await doc.save();
+    res.status(200).json({
+      success: true,
+      message: 'password_reset',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({error: error});
+    return;
+  }
 };
 
 controller.update = async function(req, res, next) {

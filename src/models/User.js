@@ -28,6 +28,9 @@ const ModelSchema = new Schema({
   confirmationCode: {
     type: String,
   },
+  resetToken: {
+    type: String,
+  },
   banned: {
     type: Boolean,
     default: false,
@@ -92,14 +95,21 @@ ModelSchema.methods.validPassword = function(password) {
 };
 
 /**
- * By default accounts are set to pending, this method is used to
+ * By default accounts are set to pending, this function is used to
  * generate a confirmation token to activate the user account.
  */
-ModelSchema.methods.generateToken = function() {
+ModelSchema.methods.generateConfirmation = function() {
   this.confirmationCode = crypto.randomBytes(16).toString('hex');
 };
 
+/**
+ * This function is used to generate a password reset token.
+ */
+ModelSchema.methods.generateReset = function() {
+  this.resetToken = crypto.randomBytes(16).toString('hex');
+};
+/*
 ModelSchema.plugin(require('mongoose-unique-validator'),
-    {message: '{PATH} must be unique'});
+    {message: '{PATH} must be unique'}); */
 
 module.exports = mongoose.model('User', ModelSchema);
