@@ -13,7 +13,7 @@ NoName is a modern forum software powered by NuxtJS and NodeJS. Currently only s
 
 NoName v1 is not yet ready for production use.
 
-View [Demo here](https://thenoname.herokuapp.com)
+View [Demo here](https://noname.red)
 
 
 ## Features
@@ -43,7 +43,7 @@ npm run start
 
 
 ## More Information
-- [Demo](https://thenoname.herokuapp.com)
+- [Demo](https://noname.red)
 - [Backend](https://github.com/Savvy/noname-backend)
 
 [![](https://i.imgur.com/gp00w0H.png)](https://i.imgur.com/gp00w0H.png)
