@@ -1,4 +1,4 @@
-const {Forum: Model, Category} = require('../models');
+const {Forum: Model, Thread, Category} = require('../models');
 const {slugify} = require('../helpers');
 const controller = module.exports;
 
@@ -37,69 +37,71 @@ controller.create = async function(req, res, next) {
   });
 };
 
-controller.get = function(req, res, next) {
-  Model.findOne({
+controller.get = async function(req, res, next) {
+  const page = +req.params.page;
+  const perPage = 15;
+  const forumId = await Model.findOne({
     slug: req.params.slug,
-  }).sort({
-    'order': -1,
-    'createdAt': -1,
-  }).populate({
-    path: 'threads',
-    populate: [
-      {
+  }).select('_id');
+  const threadCount = await Thread.find({forum: forumId}).countDocuments();
+  const threads = await Thread.find({forum: forumId}).populate([
+    {path: 'user', select: 'username', populate: {path: 'details'}},
+    {
+      path: 'posts',
+      options: {
+        sort: {
+          'createdAt': -1,
+          'updatedAt': -1,
+        },
+      },
+      populate: {
         path: 'user',
         select: 'username',
         populate: {
           path: 'details',
         },
       },
-      {
-        path: 'posts',
-        options: {
-          sort: {
-            'createdAt': -1,
-            'updatedAt': -1,
-          },
-        },
-        populate: {
-          path: 'user',
-          select: 'username',
-          populate: {
-            path: 'details',
-          },
-        },
-      },
-    ],
-    options: {
-      sort: {
-        'pinned': -1,
-        'order': -1,
-        'createdAt': -1,
-        'updatedAt': -1,
-      },
-      limit: 30,
     },
-  })
-      .populate({
-        path: 'recent_thread',
-        select: 'user updatedAt',
-        populate: {
-          path: 'user',
-          select: 'username',
-        },
-      })
-      .exec((error, forum) => {
-        if (error) {
-          res.status(500).send({message: error});
-          return;
-        }
+  ]).sort({
+    'pinned': -1,
+    'order': -1,
+    'createdAt': -1,
+    'updatedAt': -1,
+  }).limit(perPage).skip((page - 1) * perPage);
+  Model.findOne({
+    slug: req.params.slug,
+  }).sort({
+    'order': -1,
+    'createdAt': -1,
+  }).populate({
+    path: 'recent_thread',
+    select: 'user updatedAt',
+    populate: {
+      path: 'user',
+      select: 'username',
+    },
+  }).exec((error, forum) => {
+    if (error) {
+      res.status(500).send({message: error});
+      return;
+    }
 
-        if (!forum) {
-          res.status(400).send({message: 'forum_not_found'});
-          return;
-        }
-        res.status(200).json({success: true, result: forum});
-      });
+    if (!forum) {
+      res.status(400).send({message: 'forum_not_found'});
+      return;
+    }
+    forum.threads = threads;
+    res.status(200).json({
+      success: true,
+      result: forum,
+      pagination: {
+        currentPage: page,
+        perPage: perPage,
+        totalCount: threadCount,
+        totalPages: Math.ceil(threadCount / perPage),
+      },
+    });
+  });
 };
 
 controller.getAll = function(req, res, next) {
