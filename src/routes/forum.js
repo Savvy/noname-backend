@@ -3,7 +3,9 @@ const router = require('express').Router();
 const {forum: controller} = require('../controllers');
 
 router.get('/', controller.getAll);
-router.get('/:slug/:page', controller.get);
 router.post('/', controller.create);
+
+router.get('/:slug', controller.get);
+router.get('/:slug/:page', controller.get);
 
 module.exports = router;
