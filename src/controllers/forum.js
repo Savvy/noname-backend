@@ -38,7 +38,7 @@ controller.create = async function(req, res, next) {
 };
 
 controller.get = async function(req, res, next) {
-  const page = +req.params.page;
+  const page = +req.params.page || 1;
   const perPage = 15;
   const forumId = await Model.findOne({
     slug: req.params.slug,
@@ -98,7 +98,7 @@ controller.get = async function(req, res, next) {
         currentPage: page,
         perPage: perPage,
         totalCount: threadCount,
-        totalPages: Math.ceil(threadCount / perPage),
+        totalPages: Math.ceil(threadCount / perPage) || 1,
       },
     });
   });

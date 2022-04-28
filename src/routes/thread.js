@@ -7,8 +7,11 @@ router.post('/', isAuthenticated, controller.create);
 
 router.get('/', controller.getAll);
 router.get('/recent', controller.recentThreads);
+router.get('/recent/:page', controller.recentThreads);
 
 router.get('/:id', controller.get);
+router.get('/:id/:page', controller.get);
+
 // router.get('/:slug', controller.get);
 
 module.exports = router;

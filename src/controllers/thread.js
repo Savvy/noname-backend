@@ -1,4 +1,4 @@
-const {Thread: Model, Forum} = require('../models');
+const {Thread: Model, Forum, Post} = require('../models');
 const settings = require('../data/settings.json');
 /* const {slugify} = require('../helpers'); */
 const controller = module.exports;
@@ -37,7 +37,10 @@ controller.create = async function(req, res, next) {
   });
 };
 
-controller.get = function(req, res, next) {
+controller.get = async function(req, res, next) {
+  const page = +req.params.page || 1;
+  const perPage = 15;
+
   Model.findOne({
     threadId: req.params.id,
   }).populate({
@@ -48,6 +51,8 @@ controller.get = function(req, res, next) {
     },
   }).populate({
     path: 'posts',
+    limit: perPage,
+    skip: (page - 1) * perPage,
     populate: {
       path: 'user',
       populate: {
@@ -60,18 +65,29 @@ controller.get = function(req, res, next) {
   }).sort({
     'updatedAt': -1,
     'createdAt': -1,
-  }).exec((error, forum) => {
+  }).exec(async (error, result) => {
     if (error) {
       res.status(500).send({message: error});
       return;
     }
 
-    if (!forum) {
+    if (!result) {
       res.status(400).send({message: 'forum_not_found'});
       return;
     }
 
-    res.status(200).json({success: true, result: forum});
+    const postCount = await Post.countDocuments({thread: result._id});
+
+    res.status(200).json({
+      success: true,
+      result: result,
+      pagination: {
+        currentPage: page,
+        perPage: perPage,
+        totalCount: postCount || 0,
+        totalPages: Math.ceil(postCount / perPage) || 1,
+      },
+    });
   });
 };
 
@@ -90,7 +106,10 @@ controller.getAll = function(req, res, next) {
       });
 };
 
-controller.recentThreads = function(req, res, next) {
+controller.recentThreads = async function(req, res, next) {
+  const page = +req.params.page || 1;
+  const perPage = settings.recentThreadsMax;
+  const count = await Model.countDocuments({});
   Model.find({}).sort({
     createdAt: -1,
   }).populate({
@@ -108,12 +127,24 @@ controller.recentThreads = function(req, res, next) {
         path: 'details role',
       },
     },
-  }).limit(settings.recentThreadsMax).exec(function(error, results) {
-    if (error) {
-      console.error(error);
-      res.status(500).send({message: error});
-      return;
-    }
-    res.status(200).json({success: true, results: results});
-  });
+  })
+      .limit(perPage)
+      .skip((page - 1) * perPage)
+      .exec(function(error, results) {
+        if (error) {
+          console.error(error);
+          res.status(500).send({message: error});
+          return;
+        }
+        res.status(200).json({
+          success: true,
+          results: results,
+          pagination: {
+            currentPage: page,
+            perPage: perPage,
+            totalCount: count || 0,
+            totalPages: Math.ceil(count / perPage) || 1,
+          },
+        });
+      });
 };
