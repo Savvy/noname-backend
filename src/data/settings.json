@@ -13,21 +13,57 @@
     "discord": true,
     "twitter": true
   },
-  "socials": [
-    {
-      "url": "https://twitter.com",
-      "target": "_blank",
-      "icon": "bi bi-twitter"
+  "socials": {
+    "sharing": {
+      "url": "$siteUrl",
+      "title": "$siteName",
+      "description": "Come visit us!",
+      "hashtags": "vuejs,nuxtjs,javascript,web",
+      "twitterUser": "HQNoName"
     },
-    {
-      "url": "https://facebook.com/",
-      "target": "_blank",
-      "icon": "bi bi-facebook"
-    },
-    {
-      "url": "mailto:me@noname.forums",
-      "target": "_blank",
-      "icon": "bi bi-envelope"
-    }
-  ]
+    "networks": [
+      {
+        "network": "email",
+        "name": "Email",
+        "icon": "bi bi-envelope",
+        "color": "var(--primary-color)",
+        "bgColor": "var(--bg-color)"
+      },
+      {
+        "network": "facebook",
+        "name": "Facebook",
+        "icon": "bi bi-facebook",
+        "color": "#fff",
+        "bgColor": "#1877f2"
+      },
+      {
+        "network": "telegram",
+        "name": "Telegram",
+        "icon": "bi bi-telegram",
+        "color": "#fff",
+        "bgColor": "#0088cc"
+      },
+      {
+        "network": "messenger",
+        "name": "Messenger",
+        "icon": "bi bi-messenger",
+        "color": "#fff",
+        "bgColor": "#0084ff"
+      },
+      {
+        "network": "twitter",
+        "name": "Twitter",
+        "icon": "bi bi-twitter",
+        "color": "#fff",
+        "bgColor": "#1da1f2"
+      },
+      {
+        "network": "whatsapp",
+        "name": "Whatsapp",
+        "icon": "bi bi-whatsapp",
+        "color": "#fff",
+        "bgColor": "#25d366"
+      }
+    ]
+  }
 }
