@@ -15,6 +15,10 @@ router.post('/requestReset', controller.requestReset);
 
 router.post('/resetPassword/:token', controller.resetPassword);
 
+router.post('/update/username', isAuthenticated, controller.changeUsername);
+
+router.post('/update/email', isAuthenticated, controller.changeEmail);
+
 router.post('/update/:username', isAuthenticated, controller.update);
 
 module.exports = router;

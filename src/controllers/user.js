@@ -179,6 +179,64 @@ controller.resetPassword = async function(req, res, next) {
   }
 };
 
+controller.changeUsername = async function(req, res, next) {
+  if (!req.body.username) {
+    return res.status(400).send({message: 'username_field_required'});
+  }
+
+  try {
+    const count = await Model.countDocuments({username: req.body.username});
+
+    if (count) {
+      return res.status(400).send({message: 'not_unique_name'});
+    }
+
+    const update = await Model.findByIdAndUpdate(req.user._id,
+        {username: req.body.username});
+    await emailer.send('account-changed', update, {
+      userName: update.username,
+      subject: 'Username Changed',
+      change: 'username',
+    });
+    res.status(200).json({
+      success: true,
+      message: 'username_updated',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({error: error});
+  }
+};
+
+controller.changeEmail = async function(req, res, next) {
+  if (!req.body.email) {
+    return res.status(400).send({message: 'email_field_required'});
+  }
+
+  try {
+    const count = await Model.countDocuments({email: req.body.email});
+
+    if (count) {
+      return res.status(400).send({message: 'not_unique_email'});
+    }
+
+    const update = await Model.findByIdAndUpdate(req.user._id,
+        {email: req.body.email});
+    await emailer.send('account-changed', update, {
+      userName: update.username,
+      subject: 'Email Changed',
+      change: 'email',
+    });
+    res.status(200).json({
+      success: true,
+      message: 'email_updated',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({error: error});
+  }
+};
+
 controller.update = async function(req, res, next) {
   const update = req.body.user;
   const filter = {username: req.params.username};

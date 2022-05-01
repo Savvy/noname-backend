@@ -5,7 +5,7 @@
 
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Account Verification — <%= siteName %>.</title>
+	<title>Account Changed — <%= siteName %>.</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
 	<style type="text/css">
@@ -146,8 +146,7 @@
 					<tr>
 						<td align="left" bgcolor="#100E2D"
 							style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #100E2D;">
-							<h1
-								style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
+							<h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
 								Hello <span class="user_name"><%= userName %></span>,</h1>
 						</td>
 					</tr>
@@ -159,35 +158,14 @@
 				<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
 					<tr>
 						<td align="left" bgcolor="#100E2D"
-							style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-							<p style="margin: 0;">Welcome to <a href="#" class="mainText"><%= siteName %></a>. Before granting
-								full access to your account, you must confirm your email. Click the button below to confirm your email address.</p>
-						</td>
-					</tr>
-					<tr>
-						<td align="left" bgcolor="#100E2D">
-							<table border="0" cellpadding="0" cellspacing="0" width="100%">
-								<tr>
-									<td align="center" bgcolor="#100E2D" style="padding: 12px;">
-										<table border="0" cellpadding="0" cellspacing="0">
-											<tr>
-												<td align="center" style="border-radius: 4px;">
-													<a href="<%= verificationUrl %>" target="_blank" class="btn">Confirm Email</a>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
+							style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; text-align: center;">
+							<p style="margin: 0;">Your <%= change %>> has been changed.</p>
 						</td>
 					</tr>
 					<tr>
 						<td align="left" bgcolor="#100E2D"
 							style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-							<p style="margin: 0; color: #7A7A7A;">If that doesn't work, copy and paste the following
-								link in your browser:</p>
-							<p style="margin: 0;"><a href="<%= verificationUrl %>" target="_blank"><%= verificationUrl %></a>
-							</p>
+							<p style="margin: 0; color: #7A7A7A;">If you do not recognize this change, please contact support immediately. </p>
 						</td>
 					</tr>
 					<tr>
