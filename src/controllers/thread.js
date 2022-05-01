@@ -8,13 +8,20 @@ controller.create = async function(req, res, next) {
   let thread = new Model({
     forum: data.forum,
     title: data.title,
-    /* slug: slugify(data.title), */
-    content: data.content ? data.content : '',
     pinned: data.pinned,
     user: req.user._id,
   });
 
+  let post = new Post({
+    user: req.user._id,
+    content: data.content,
+    thread: data.thread,
+  });
+
+  thread.posts.push(post);
+
   try {
+    post = await post.save();
     thread = await thread.save();
   } catch (error) {
     res.status(500).send({message: error});

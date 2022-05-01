@@ -5,9 +5,7 @@ const Schema = mongoose.Schema;
 const ModelSchema = new Schema({
   threadId: Number,
   title: String,
-  content: String,
   pinned: Boolean,
-  /* slug: String, */
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
