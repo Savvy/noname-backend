@@ -8,4 +8,5 @@ module.exports = {
   post: require('./post'),
   comment: require('./comment'),
   settings: require('./settings'),
+  bookmark: require('./bookmark'),
 };

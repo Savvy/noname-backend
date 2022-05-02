@@ -7,4 +7,5 @@ module.exports = {
   Post: require('./Post'),
   Comment: require('./Comment'),
   Role: require('./Role'),
+  Bookmark: require('./Bookmark'),
 };

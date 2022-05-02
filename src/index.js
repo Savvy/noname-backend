@@ -77,6 +77,7 @@ app.use('/thread', routes.thread);
 app.use('/post', routes.post);
 app.use('/module', routes.module);
 app.use('/comment', routes.comment);
+app.use('/bookmark', routes.bookmark);
 
 /**
  * Setting up database
