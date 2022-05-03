@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const multer = require('multer');
+const {error} = require('./middleware');
 
 const app = express();
 
@@ -79,7 +80,29 @@ app.use('/module', routes.module);
 app.use('/comment', routes.comment);
 app.use('/bookmark', routes.bookmark);
 
-const {error} = require('./middleware');
+if (process.env.SENTRY_LOGGING) {
+  const Sentry = require('@sentry/node');
+  const Tracing = require('@sentry/tracing');
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({tracing: true}),
+      // enable Express.js middleware tracing
+      new Tracing.Integrations.Express({app}),
+    ],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
+
+  app.use(Sentry.Handlers.requestHandler());
+  app.use(Sentry.Handlers.tracingHandler());
+  app.use(Sentry.Handlers.errorHandler());
+}
+
 app.use(error.logger);
 app.use(error.responder);
 

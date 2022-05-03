@@ -33,11 +33,25 @@ To install and run the backend project, ensure you have entered the proper envir
 CLIENT_URL=
 MONGO_CONNECTION=
 SESSION_SECRET=
+SENTRY_LOGGING=false
+SENTRY_DSN=
+DISCORD_ID=
+DISCORD_SECRET=
+DISCORD_CALLBACK=
+TWITTER_KEY=
+TWITTER_SECRET=
+TWITTER_CALLBACK=
+SMTP_SERVICE=
+SMTP_PORT=
+SMTP_AUTH_USER=
+SMTP_AUTH_PASS=
 ```
 
 Then run the following commands:
 ```
 npm install
+# The below command is optional if you'd like sentry error tracking.
+npm install @sentry/node @sentry/tracing
 npm run start
 ```
 

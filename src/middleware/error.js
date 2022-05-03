@@ -6,6 +6,11 @@ error.logger = function(err, req, res, next) {
 };
 
 error.responder = function(err, req, res, next) {
+  if (process.env.SENTRY_LOGGING) {
+    res.statusCode = 500;
+    res.end(res.sentry + '\n');
+    return;
+  }
   res.header('Content-Type', 'application/json');
-  res.status(err.statusCode).send(JSON.stringify(err, null, 4));
+  res.status(err).send(JSON.stringify(err, null, 4));
 };

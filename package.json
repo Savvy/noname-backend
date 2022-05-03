@@ -21,6 +21,8 @@
     "eslint-config-google": "^0.14.0"
   },
   "dependencies": {
+    "@sentry/node": "^6.19.7",
+    "@sentry/tracing": "^6.19.7",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
