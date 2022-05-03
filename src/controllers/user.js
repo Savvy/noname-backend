@@ -1,4 +1,7 @@
-const {User: Model, UserDetails, Thread, Post, Comment} = require('../models');
+const {
+  User: Model, UserDetails,
+  Thread, Post, Comment, Bookmark,
+} = require('../models');
 const {emailer} = require('../helpers');
 const controller = module.exports;
 
@@ -6,7 +9,7 @@ controller.get = async function(req, res, next) {
   const user = {...req.user};
   delete user.password;
   delete user.confirmationCode;
-  const comments = await Comment.find({user: user._id})
+  user.wallPosts = await Comment.find({user: user._id})
       .populate({
         path: 'user author',
         select: 'username',
@@ -27,7 +30,7 @@ controller.get = async function(req, res, next) {
         createdAt: '-1',
       });
 
-  user.wallPosts = comments;
+  user.bookmarks = await Bookmark.find({user: user._id});
 
   user.threadCount = await Thread.countDocuments({user: user});
   user.postCount = await Post.countDocuments({user: user});

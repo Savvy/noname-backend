@@ -6,6 +6,10 @@ const ModelSchema = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
   },
+  thread: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Thread',
+  },
   post: {
     type: mongoose.Schema.ObjectId,
     ref: 'Post',

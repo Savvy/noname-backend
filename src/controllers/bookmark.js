@@ -10,7 +10,7 @@ controller.add = async function(req, res, next) {
   }
 
   try {
-    const post = await Post.findById(postId);
+    const post = await Post.findOne({_id: postId});
 
     if (!post) {
       return res.status(400).send({message: 'post_not_found'});
@@ -24,13 +24,41 @@ controller.add = async function(req, res, next) {
 
     doc = new Model({
       user: req.user,
-      post: postId,
+      thread: post.thread,
+      post: post._id,
     });
 
     await doc.save();
     return res.status(200).json({
       success: true,
       message: 'bookmark_created',
+      bookmark: doc,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({message: error});
+  }
+};
+
+controller.remove = async function(req, res, next) {
+  const postId = req.body.postId;
+
+  if (!postId) {
+    return res.status(400).send({message: 'post_required'});
+  }
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(400).send({message: 'post_not_found'});
+    }
+
+    const doc = await Model.findOneAndDelete({user: req.user, post: post});
+    return res.status(200).json({
+      success: true,
+      message: doc ? 'bookmark_deleted' : 'bookmark_not_found',
+      bookmark: doc,
     });
   } catch (error) {
     console.log(error);
@@ -44,7 +72,6 @@ controller.get = async function(req, res, next) {
   try {
     const count = await Model.countDocuments({user: req.user});
     const results = await Model.find({user: req.user})
-        .populate('post')
         .limit(perPage).skip((page - 1) * perPage);
     res.status(200).json({
       success: true,
