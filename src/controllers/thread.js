@@ -24,8 +24,7 @@ controller.create = async function(req, res, next) {
     post = await post.save();
     thread = await thread.save();
   } catch (error) {
-    res.status(500).send({message: error});
-    return;
+    return next(error);
   }
 
   const forum = await Forum.findById(data.forum);
@@ -33,8 +32,7 @@ controller.create = async function(req, res, next) {
   forum.recent_thread = thread;
   forum.save((error, _) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
     res.status(200).json({
       success: true,
@@ -74,8 +72,7 @@ controller.get = async function(req, res, next) {
     'createdAt': -1,
   }).exec(async (error, result) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
 
     if (!result) {
@@ -106,8 +103,7 @@ controller.getAll = function(req, res, next) {
         createdAt: -1,
       }).limit(30).exec(function(error, results) {
         if (error) {
-          res.status(500).send({message: error});
-          return;
+          return next(error);
         }
         res.status(200).json({success: true, results: results});
       });
@@ -139,9 +135,7 @@ controller.recentThreads = async function(req, res, next) {
       .skip((page - 1) * perPage)
       .exec(function(error, results) {
         if (error) {
-          console.error(error);
-          res.status(500).send({message: error});
-          return;
+          return next(error);
         }
         res.status(200).json({
           success: true,

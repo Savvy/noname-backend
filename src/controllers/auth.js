@@ -8,8 +8,7 @@ const controller = module.exports;
 controller.login = function(req, res, next) {
   passport.authenticate('local', function(error, user, info) {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
 
     if (!user) {
@@ -22,8 +21,7 @@ controller.login = function(req, res, next) {
 
     req.login(user, async function(error) {
       if (error) {
-        res.status(500).send({message: error});
-        return;
+        return next(error);
       }
 
       await Model.findByIdAndUpdate(req.user._id, {
@@ -78,11 +76,7 @@ controller.register = async function(req, res, next) {
   try {
     user.setPassword(req.body.password);
     user.generateConfirmation();
-    /*
-    if (error) {
-      res.status(500).send({message: error});
-      return;
-    } */
+
     // TODO: Send user confirmation email
     const url = `${process.env.CLIENT_URL}/confirm/${user.confirmationCode}`;
 
@@ -101,8 +95,7 @@ controller.register = async function(req, res, next) {
       result: user,
     });
   } catch (error) {
-    res.status(500).send(error);
-    return;
+    next(error);
   }
 };
 
@@ -121,8 +114,7 @@ controller.resend = async function(req, res, next) {
       message: 'confirmation_resent',
     });
   } catch (error) {
-    res.status(500).send({error: error.message});
-    return;
+    next(error);
   }
 };
 
@@ -143,7 +135,6 @@ controller.verify = async function(req, res, next) {
       message: 'account_confirmed',
     });
   } catch (error) {
-    res.status(500).send({error: error});
-    return;
+    next(error);
   }
 };

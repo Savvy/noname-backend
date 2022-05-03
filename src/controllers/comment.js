@@ -20,8 +20,7 @@ controller.delete = async function(req, res, next) {
       message: 'comment_deleted',
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    next(error);
   }
 };
 
@@ -54,8 +53,7 @@ controller.like = async function(req, res, next) {
     });
     return;
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    next(error);
   }
 };
 
@@ -82,7 +80,6 @@ controller.create = async function(req, res, next) {
       result: result,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
+    next(error);
   }
 };

@@ -13,16 +13,14 @@ controller.create = async function(req, res, next) {
   try {
     post = await post.save();
   } catch (error) {
-    res.status(500).send({message: error});
-    return;
+    return next(error);
   }
 
   const thread = await Thread.findById(data.thread);
   thread.posts.push(post);
   thread.save((error, _) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
     res.status(200).json({
       success: true,

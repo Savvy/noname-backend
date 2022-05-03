@@ -9,8 +9,7 @@ middleware.checkUsernameAndEmail = function(req, res, next) {
     username: username,
   }).exec((error, user) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
 
     if (user) {
@@ -22,8 +21,7 @@ middleware.checkUsernameAndEmail = function(req, res, next) {
       email: email,
     }).exec((error, user) => {
       if (error) {
-        res.status(500).send({message: error});
-        return;
+        return next(error);
       }
 
       if (user) {

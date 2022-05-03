@@ -18,8 +18,7 @@ controller.create = async function(req, res, next) {
 
   forum.save((error, _forum) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
   });
 
@@ -27,8 +26,7 @@ controller.create = async function(req, res, next) {
   category.forums.push(forum);
   category.save((error, _result) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
     res.status(200).json({
       success: true,
@@ -82,8 +80,7 @@ controller.get = async function(req, res, next) {
     },
   }).exec((error, forum) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
 
     if (!forum) {
@@ -112,8 +109,7 @@ controller.getAll = function(req, res, next) {
         createdAt: -1,
       }).exec(function(error, results) {
         if (error) {
-          res.status(500).send({message: error});
-          return;
+          return next(error);
         }
 
         res.status(200).json({success: true, results: results});

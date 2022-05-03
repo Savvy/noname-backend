@@ -78,11 +78,9 @@ async function createNewUser(profile) {
 async function getAvailableName(username) {
   let attempt = 0;
   let count = await Model.countDocuments({username: username});
-  console.log(count);
   while (count > 0) {
     attempt++;
     count = await Model.countDocuments({username: (username + attempt)});
   }
-  console.log(count);
   return username + (attempt > 0 ? attempt : '');
 }

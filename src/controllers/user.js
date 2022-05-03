@@ -45,8 +45,7 @@ controller.find = function(req, res, next) {
       '-password -confirmationCode -email').
       populate('details role').lean().exec(async (error, user) => {
         if (error) {
-          res.status(500).send({message: error});
-          return;
+          return next(error);
         }
 
         if (!user) {
@@ -93,8 +92,7 @@ controller.findLatest = function(req, res, next) {
     sort: {'createdAt': -1},
   }, function(error, user) {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
 
     res.status(200).send({
@@ -109,14 +107,12 @@ controller.changePassword = async function(req, res, next) {
   const filter = {_id: req.user._id}; */
   const user = await Model.findById(req.user._id);
   if (!user.validPassword(req.body.currentPassword)) {
-    res.status(500).send({message: 'incorrect_password'});
-    return;
+    return next(error);
   }
   user.setPassword(req.body.password);
   user.save((error, user) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
     res.status(200).json({
       success: true,
@@ -151,9 +147,7 @@ controller.requestReset = async function(req, res, next) {
       message: 'confirmation_resent',
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({error: error});
-    return;
+    next(error);
   }
 };
 
@@ -176,9 +170,7 @@ controller.resetPassword = async function(req, res, next) {
       message: 'password_reset',
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({error: error});
-    return;
+    next(error);
   }
 };
 
@@ -206,8 +198,7 @@ controller.changeUsername = async function(req, res, next) {
       message: 'username_updated',
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({error: error});
+    next(error);
   }
 };
 
@@ -235,8 +226,7 @@ controller.changeEmail = async function(req, res, next) {
       message: 'email_updated',
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({error: error});
+    next(error);
   }
 };
 

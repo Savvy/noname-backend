@@ -79,6 +79,10 @@ app.use('/module', routes.module);
 app.use('/comment', routes.comment);
 app.use('/bookmark', routes.bookmark);
 
+const {error} = require('./middleware');
+app.use(error.logger);
+app.use(error.responder);
+
 /**
  * Setting up database
  */
@@ -95,4 +99,4 @@ defaultRoles.handleRoles();
  */
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Rover: Running on port ${PORT}`));
+app.listen(PORT, () => console.log(`NoName: Running on port ${PORT}`));

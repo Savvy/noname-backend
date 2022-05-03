@@ -14,8 +14,7 @@ controller.create = function(req, res, next) {
 
   category.save((error, _category) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
     res.status(200).json({
       success: true,
@@ -53,7 +52,7 @@ controller.getAll = async function(req, res, next) {
       result: results,
     });
   } catch (error) {
-    res.status(500).send({message: error});
+    next(error);
   }
 };
 
@@ -62,8 +61,7 @@ controller.delete = function(req, res, next) {
     _id: req.body._id,
   }, (error) => {
     if (error) {
-      res.status(500).send({message: error});
-      return;
+      return next(error);
     }
 
     res.json({

@@ -35,8 +35,7 @@ controller.add = async function(req, res, next) {
       bookmark: doc,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({message: error});
+    next(error);
   }
 };
 
@@ -61,8 +60,7 @@ controller.remove = async function(req, res, next) {
       bookmark: doc,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({message: error});
+    next(error);
   }
 };
 
@@ -84,7 +82,6 @@ controller.get = async function(req, res, next) {
       },
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({message: error});
+    next(error);
   }
 };
