@@ -2,6 +2,7 @@
 const router = require('express').Router();
 const {isAuthenticated} = require('../middleware');
 const {user: controller} = require('../controllers');
+const {avatar} = require('../helpers');
 
 router.get('/', isAuthenticated, controller.get);
 
@@ -20,5 +21,8 @@ router.post('/update/username', isAuthenticated, controller.changeUsername);
 router.post('/update/email', isAuthenticated, controller.changeEmail);
 
 router.post('/update/:username', isAuthenticated, controller.update);
+
+router.post('/avatar', isAuthenticated,
+    avatar.single('avatar'), controller.avatar);
 
 module.exports = router;

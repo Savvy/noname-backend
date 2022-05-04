@@ -1,3 +1,6 @@
+# Static Assets
+/src/public/
+
 # Logs
 logs
 *.log

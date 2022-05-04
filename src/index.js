@@ -7,8 +7,8 @@ const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
-const multer = require('multer');
 const {error} = require('./middleware');
+const path = require('path');
 
 const app = express();
 
@@ -42,15 +42,6 @@ app.use(express.json());
 /**
  * Multer
  */
-const multerMid = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024,
-  },
-});
-
-app.disable('x-powered-by');
-app.use(multerMid.single('file'));
 
 /*
   Include and initialize the passport authentication middleware.
@@ -79,8 +70,9 @@ app.use('/post', routes.post);
 app.use('/module', routes.module);
 app.use('/comment', routes.comment);
 app.use('/bookmark', routes.bookmark);
+app.use('/avatars', express.static(path.join(__dirname, 'public', 'avatars')));
 
-if (process.env.SENTRY_LOGGING) {
+if (process.env.SENTRY_LOGGING === 'true') {
   const Sentry = require('@sentry/node');
   const Tracing = require('@sentry/tracing');
   Sentry.init({

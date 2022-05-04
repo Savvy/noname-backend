@@ -245,3 +245,22 @@ controller.update = async function(req, res, next) {
 
   return res.status(200).send({user: user, details: document});
 };
+
+controller.avatar = async function(req, res, next) {
+  try {
+    const update = {
+      avatarType: 'Custom',
+      avatar: `avatars/${req.file.filename}`,
+    };
+    await UserDetails.findOneAndUpdate({
+      _id: req.user.details._id,
+    }, update);
+    res.status(200).json({
+      success: true,
+      message: 'avatar_updated',
+      avatar: update,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
