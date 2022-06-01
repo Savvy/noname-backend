@@ -2,6 +2,7 @@ const passport = require('passport');
 const gravatar = require('gravatar');
 const {emailer} = require('../helpers');
 const {User: Model, UserDetails, Role} = require('../models');
+const {logsnag} = require('../helpers');
 
 const controller = module.exports;
 
@@ -84,6 +85,11 @@ controller.register = async function(req, res, next) {
       userName: user.username,
       verificationUrl: url,
       subject: 'Confirm Your Email Address',
+    });
+
+    logsnag.publish({
+      ...logsnag.EVENTS.USER_REGISTRATION,
+      description: `${user.email} registered`,
     });
 
     await userDetails.save();

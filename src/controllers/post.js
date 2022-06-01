@@ -1,5 +1,5 @@
 const {Post: Model, Thread} = require('../models');
-/* const {slugify} = require('../helpers'); */
+const {logsnag} = require('../helpers');
 const controller = module.exports;
 
 controller.create = async function(req, res, next) {
@@ -22,6 +22,12 @@ controller.create = async function(req, res, next) {
     if (error) {
       return next(error);
     }
+
+    logsnag.publish({
+      ...logsnag.EVENTS.THREAD_POST,
+      description: `${req.user.username} replied to thread ${thread.title}`,
+    });
+
     res.status(200).json({
       success: true,
       message: 'post_created',

@@ -1,4 +1,5 @@
 const {Comment: Model} = require('../models');
+const {logsnag} = require('../helpers');
 const controller = module.exports;
 
 controller.delete = async function(req, res, next) {
@@ -9,7 +10,8 @@ controller.delete = async function(req, res, next) {
       return;
     }
 
-    if (comment.author !== req.user._id) {
+    if (comment.author.toString() !== req.user._id.toString()) {
+      console.log('no_permission');
       res.status(403).send({message: 'no_permission'});
       return;
     }
@@ -30,7 +32,7 @@ controller.like = async function(req, res, next) {
   try {
     const comment = await Model.findById(data.id);
     if (!comment) {
-      // Comment does not exist;
+      res.status(404).send({message: 'comment_not_found'});
       return;
     }
 
@@ -61,7 +63,7 @@ controller.create = async function(req, res, next) {
   const data = req.body;
   try {
     const comment = new Model({
-      user: data.user,
+      user: data.user._id,
       author: data.author,
       reply: data.parent !== undefined && data.parent !== null,
       content: data.content,
@@ -74,6 +76,12 @@ controller.create = async function(req, res, next) {
       parent.children.push(result);
       await parent.save();
     }
+
+    logsnag.publish({
+      ...logsnag.EVENTS.WALL_POST,
+      description:
+      `${req.user.username} posted on ${data.user.username}'s wall`,
+    });
 
     res.status(200).json({
       success: true,

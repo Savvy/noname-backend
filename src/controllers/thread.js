@@ -1,6 +1,6 @@
 const {Thread: Model, Forum, Post} = require('../models');
 const settings = require('../data/settings.json');
-/* const {slugify} = require('../helpers'); */
+const {logsnag} = require('../helpers');
 const controller = module.exports;
 
 controller.create = async function(req, res, next) {
@@ -34,6 +34,10 @@ controller.create = async function(req, res, next) {
     if (error) {
       return next(error);
     }
+    logsnag.publish({
+      ...logsnag.EVENTS.THREAD_CREATED,
+      description: `${thread.title} created by ${req.user.username}`,
+    });
     res.status(200).json({
       success: true,
       message: 'thread_created',
