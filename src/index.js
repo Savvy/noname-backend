@@ -20,7 +20,7 @@ const app = express();
 app.use(morgan('combined'));
 
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: process.env.CLIENT_URL.split(','),
   credentials: true,
 }));
 
