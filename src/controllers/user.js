@@ -266,3 +266,32 @@ controller.avatar = async function(req, res, next) {
     return next(error);
   }
 };
+
+controller.members = async function(req, res, next) {
+  const staff = await Model.find({isStaff: true}).select('username role')
+      .populate({
+        path: 'details',
+        select: 'avatarType avatar',
+      })
+      .populate({
+        path: 'role',
+      });
+  const members = await Model
+      .find({isStaff: false})
+      .sort('-createdAt')
+      .limit(15).select('username role')
+      .populate({
+        path: 'details',
+        select: 'avatarType avatar',
+      })
+      .populate({
+        path: 'role',
+      });
+
+  res.status(200).json({
+    success: true,
+    message: 'members_list',
+    staff: staff,
+    members: members,
+  });
+};

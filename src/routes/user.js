@@ -6,6 +6,8 @@ const {avatar} = require('../helpers');
 
 router.get('/', isAuthenticated, controller.get);
 
+router.get('/members', controller.members);
+
 router.get('/find/:username', controller.find);
 
 router.get('/recent', controller.findLatest);

@@ -43,6 +43,10 @@ const ModelSchema = new Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Role',
   },
+  isStaff: {
+    type: Boolean,
+    default: false,
+  },
   lastSeen: {
     type: Date,
     default: new Date(),
