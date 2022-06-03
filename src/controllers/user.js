@@ -2,6 +2,7 @@ const {
   User: Model, UserDetails,
   Thread, Post, Comment, Bookmark,
 } = require('../models');
+const config = require('../data/config.json');
 const {emailer} = require('../helpers');
 const controller = module.exports;
 
@@ -249,8 +250,9 @@ controller.update = async function(req, res, next) {
 controller.avatar = async function(req, res, next) {
   try {
     const update = {
-      avatarType: 'Custom',
-      avatar: `avatars/${req.file.filename}`,
+      avatarType: config.storage === 'disk' ? 'Disk' : 'Custom',
+      avatar: config.storage === 'disk' ?
+      `avatars/${req.file.filename}` : req.file.location,
     };
     await UserDetails.findOneAndUpdate({
       _id: req.user.details._id,

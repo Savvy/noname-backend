@@ -1,5 +1,6 @@
 {
   "titleTemplate": "%s - NoName",
   "siteName": "NoName",
-  "defaultLanguage": "en-US"
+  "defaultLanguage": "en-US",
+  "storage": "s3"
 }
